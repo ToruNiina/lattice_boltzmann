@@ -31,9 +31,9 @@ struct Grid
         }
         return d;
     }
-    Vector velocity() const
+    Vector velocity(const double rho) const
     {
-        const auto rho_inv = 1.0 / density();
+        const auto rho_inv = 1.0 / rho;
 
         const auto x_elem = this->distribution(Direction::Right)
                           + this->distribution(Direction::RightUp)
@@ -61,4 +61,4 @@ struct Grid
 };
 
 } // lbm
-#endif // LATTICE_BOLTZMANN_BOUNDARY_HPP
+#endif // LATTICE_BOLTZMANN_GRID_HPP
