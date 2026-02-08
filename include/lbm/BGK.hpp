@@ -13,11 +13,8 @@ struct BGK
         : viscosity_(nu), omega_(1.0 / (3.0 * nu + 0.5))
     {}
 
-    void collide(GridBase& g) const
+    void collide(GridBase& g, double rho, Vector u) const
     {
-        const auto rho = g.density();
-        const auto u   = g.velocity(rho);
-
         for(const auto& dir : all_dirs)
         {
             g.distribution(dir) *= (1 - omega_);
