@@ -34,6 +34,10 @@ struct Grid
     {
         return std::visit([](const auto& g) {return g.density();});
     }
+    Vector velocity() const override
+    {
+        return velocity(density());
+    }
     Vector velocity(const double rho) const
     {
         return std::visit([rho](const auto& g) {return g.velocity(rho);});

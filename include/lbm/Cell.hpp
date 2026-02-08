@@ -41,6 +41,10 @@ struct Cell final : public GridBase
         }
         return d;
     }
+    Vector velocity() const override
+    {
+        return velocity(density());
+    }
     Vector velocity(const double rho) const override
     {
         const auto rho_inv = 1.0 / rho;

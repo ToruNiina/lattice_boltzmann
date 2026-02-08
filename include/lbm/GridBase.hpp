@@ -19,6 +19,7 @@ struct GridBase
 
     double density() const = 0;
     Vector velocity(const double rho) const = 0;
+    Vector velocity() const = 0;
 };
 
 } // lbm

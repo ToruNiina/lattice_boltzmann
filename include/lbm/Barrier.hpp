@@ -37,6 +37,10 @@ struct Barrier final : public GridBase
     {
         return 0;
     }
+    Vector velocity() const override
+    {
+        return velocity(density());
+    }
     Vector velocity(const double) const override
     {
         return Vector{0, 0};
