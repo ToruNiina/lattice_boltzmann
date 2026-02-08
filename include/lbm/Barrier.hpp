@@ -9,25 +9,27 @@
 namespace lbm
 {
 
-struct Barrier
+struct Barrier final : public GridBase
 {
-    double  distribution(const Direction dir) const noexcept
+    ~Barrier() override = default;
+
+    double  distribution(const Direction dir) const noexcept override
     {
         assert(static_cast<std::size_t>(dir) < distribution_.size());
         return distribution_[static_cast<std::size_t>(dir)];
     }
-    double& distribution(const Direction dir) noexcept
+    double& distribution(const Direction dir) noexcept override
     {
         assert(static_cast<std::size_t>(dir) < distribution_.size());
         return distribution_[static_cast<std::size_t>(dir)];
     }
 
     // no fluid inside the barrier
-    double density() const
+    double density() const override
     {
         return 0;
     }
-    Vector velocity(const double) const
+    Vector velocity(const double) const override
     {
         return Vector{0, 0};
     }

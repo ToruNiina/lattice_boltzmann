@@ -9,20 +9,22 @@
 namespace lbm
 {
 
-struct Cell
+struct Cell final : public GridBase
 {
-    double  distribution(const Direction dir) const noexcept
+    ~Cell() override = default;
+
+    double  distribution(const Direction dir) const noexcept override
     {
         assert(static_cast<std::size_t>(dir) < distribution_.size());
         return distribution_[static_cast<std::size_t>(dir)];
     }
-    double& distribution(const Direction dir) noexcept
+    double& distribution(const Direction dir) noexcept override
     {
         assert(static_cast<std::size_t>(dir) < distribution_.size());
         return distribution_[static_cast<std::size_t>(dir)];
     }
 
-    double density() const
+    double density() const override
     {
         double d = 0;
         for(const auto& distr : distribution_)
@@ -31,7 +33,7 @@ struct Cell
         }
         return d;
     }
-    Vector velocity(const double rho) const
+    Vector velocity(const double rho) const override
     {
         const auto rho_inv = 1.0 / rho;
 
