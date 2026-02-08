@@ -1,6 +1,9 @@
 #ifndef LATTICE_BOLTZMANN_BGK_HPP
 #define LATTICE_BOLTZMANN_BGK_HPP
 
+#include "Direction.hpp"
+#include "GridBase.hpp"
+
 namespace lbm
 {
 
@@ -10,18 +13,15 @@ struct BGK
         : viscosity_(nu), omega_(1.0 / (3.0 * nu + 0.5))
     {}
 
-    Grid collide(const Grid& g) const
+    void collide(GridBase& g) const
     {
-        Grid next;
-
         const auto rho = g.density();
         const auto u   = g.velocity(rho);
 
         for(const auto& dir : all_dirs)
         {
-            next.distribution(dir) =
-                (1 - omega_) * g.distribution(dir) +
-                this->equilibrium(dir, rho, u);
+            g.distribution(dir) *= (1 - omega_);
+            g.distribution(dir) += this->equilibrium(dir, rho, u);
         }
         return ;
     }
