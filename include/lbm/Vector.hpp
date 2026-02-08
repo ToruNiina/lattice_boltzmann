@@ -1,6 +1,8 @@
 #ifndef LATTICE_BOLTZMANN_VECTOR_HPP
 #define LATTICE_BOLTZMANN_VECTOR_HPP
 
+#include <cmath>
+
 namespace lbm
 {
 
@@ -35,10 +37,15 @@ double dot_product(const Vector& lhs, const Vecotr& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y;
 }
-double length(const Vector& lhs)
+double length_sq(const Vector& lhs)
 {
     return dot_product(lhs, lhs);
 }
+double length(const Vector& lhs)
+{
+    return std::sqrt(length(lhs));
+}
+
 
 } // lbm
 #endif // LATTICE_BOLTZMANN_VECTOR_HPP
