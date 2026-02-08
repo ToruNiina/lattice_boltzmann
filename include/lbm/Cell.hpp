@@ -13,6 +13,14 @@ struct Cell final : public GridBase
 {
     ~Cell() override = default;
 
+    void initialize(const BGK& model, const double rho, const double Vector u) override
+    {
+        for(const auto& dir : all_dirs)
+        {
+            this->distribution(dir) = model.equilibrium(dir, rho, u);
+        }
+    }
+
     double  distribution(const Direction dir) const noexcept override
     {
         assert(static_cast<std::size_t>(dir) < distribution_.size());

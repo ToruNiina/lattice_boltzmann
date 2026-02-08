@@ -13,6 +13,14 @@ struct Barrier final : public GridBase
 {
     ~Barrier() override = default;
 
+    void initialize(const BGK&, const double, const double Vector) override
+    {
+        for(const auto& dir : all_dirs)
+        {
+            this->distribution(dir) = 0;
+        }
+    }
+
     double  distribution(const Direction dir) const noexcept override
     {
         assert(static_cast<std::size_t>(dir) < distribution_.size());

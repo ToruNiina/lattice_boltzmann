@@ -12,6 +12,8 @@ struct GridBase
 {
     virtual ~GridBase() = default;
 
+    void initialize(const BGK&, const double, const double Vector) = 0;
+
     virtual double  distribution(const Direction dir) const noexcept = 0;
     virtual double& distribution(const Direction dir)       noexcept = 0;
 

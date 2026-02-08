@@ -16,6 +16,11 @@ struct Grid
     explicit Grid& operator=(Cell    c) {grid_ = c; return *this;}
     explicit Grid& operator=(Barrier b) {grid_ = b; return *this;}
 
+    void initialize(const BGK& model, const double rho, const double Vector u) override
+    {
+        return std::visit([&model, rho, u](auto& g) {return g.initialize(model, rho, u);});
+    }
+
     double  distribution(const Direction dir) const noexcept
     {
         return std::visit([dir](const auto& g) {return g.distribution(dir);});
