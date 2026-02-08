@@ -1,5 +1,5 @@
-#ifndef LATTICE_BOLTZMANN_GRID_HPP
-#define LATTICE_BOLTZMANN_GRID_HPP
+#ifndef LATTICE_BOLTZMANN_CELL_HPP
+#define LATTICE_BOLTZMANN_CELL_HPP
 
 #include "Direction.hpp"
 #include "Vector.hpp"
@@ -9,7 +9,7 @@
 namespace lbm
 {
 
-struct Grid
+struct Cell
 {
     double  distribution(const Direction dir) const noexcept
     {
@@ -61,4 +61,4 @@ struct Grid
 };
 
 } // lbm
-#endif // LATTICE_BOLTZMANN_GRID_HPP
+#endif // LATTICE_BOLTZMANN_CELL_HPP
