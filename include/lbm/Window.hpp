@@ -7,8 +7,7 @@
 #include <algorithm>
 #include <memory>
 #include <stdexcept>
-
-#include <iostream>
+#include <fstream>
 
 namespace lbm
 {
@@ -118,6 +117,28 @@ struct Window
         else
         {
             return std::make_tuple(0xFF, 0xFF, 0xFF);
+        }
+    }
+
+    void dump(std::string filename, const World& w)
+    {
+        std::ofstream ofs(filename);
+        ofs << std::format("P3\n{} {}\n255\n", w.size_x(), w.size_y());
+        for(std::int32_t y=0; y<w.size_y(); ++y)
+        {
+            for(std::int32_t x=0; x<w.size_x(); ++x)
+            {
+                if(w.at(x, y).is_barrier())
+                {
+                    ofs << "0 0 0\n";
+                }
+                else
+                {
+                    const auto scale = w.rot_z(x, y) * 40;
+                    const auto [r, g, b] = colormap(scale);
+                    ofs << std::format("{} {} {}\n", r, g, b);
+                }
+            }
         }
     }
 
