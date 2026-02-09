@@ -1,7 +1,9 @@
 #ifndef LATTICE_BOLTZMANN_DIRECTION_HPP
 #define LATTICE_BOLTZMANN_DIRECTION_HPP
 
+#include "Vector.hpp"
 #include <array>
+#include <cstdint>
 
 namespace lbm
 {
@@ -31,8 +33,30 @@ inline constexpr std::array<Direction, 9> all_dirs{{
     Direction::RightDown
 }};
 
+Vector velocity_of(Direction d)
+{
+    using enum Direction;
+    switch(d)
+    {
+        case Self     : { return Vector( 0, 0); }
+
+        case Right    : { return Vector( 1, 0); }
+        case Up       : { return Vector( 0, 1); }
+        case Left     : { return Vector(-1, 0); }
+        case Down     : { return Vector( 0,-1); }
+
+        case RightUp  : { return Vector( 1, 1); }
+        case LeftUp   : { return Vector(-1, 1); }
+        case LeftDown : { return Vector(-1,-1); }
+        case RightDown: { return Vector( 1,-1); }
+        default: break;
+    }
+    return Vector(0, 0);
+}
+
 inline std::pair<std::int32_t, std::int32_t> offset(const Direction d)
 {
+    using enum Direction;
     switch(d)
     {
         case Self     : { return std::make_pair( 0, 0); }
@@ -48,6 +72,28 @@ inline std::pair<std::int32_t, std::int32_t> offset(const Direction d)
         case RightDown: { return std::make_pair( 1,-1); }
         default: break;
     }
+    return std::make_pair( 0, 0);
+}
+
+inline Direction bounce_back(const Direction d)
+{
+    using enum Direction;
+    switch(d)
+    {
+        case Self     : { return Self;  }
+
+        case Right    : { return Left;  }
+        case Up       : { return Down;  }
+        case Left     : { return Right; }
+        case Down     : { return Up;    }
+
+        case RightUp  : { return LeftDown;  }
+        case LeftUp   : { return RightDown; }
+        case LeftDown : { return RightUp;   }
+        case RightDown: { return LeftUp;    }
+        default: break;
+    }
+    return Self;
 }
 
 } // lbm
