@@ -4,6 +4,8 @@
 #include "Direction.hpp"
 #include "GridBase.hpp"
 
+#include <cassert>
+
 namespace lbm
 {
 
@@ -18,7 +20,7 @@ struct BGK
         for(const auto& dir : all_dirs)
         {
             g.distribution(dir) *= (1 - omega_);
-            g.distribution(dir) += this->equilibrium(dir, rho, u);
+            g.distribution(dir) += omega_ * this->equilibrium(dir, rho, u);
         }
         return ;
     }
@@ -32,15 +34,15 @@ struct BGK
         {
             case Self     : { return (4/ 9.0) * rho * (1 - 1.5 * u2); }
 
-            case Right    : { return (1/ 9.0) * rho * (1 + 3*u.x + 2/9.0*u.x*u.x - 1.5*u2); }
-            case Up       : { return (1/ 9.0) * rho * (1 + 3*u.y + 2/9.0*u.y*u.y - 1.5*u2); }
-            case Left     : { return (1/ 9.0) * rho * (1 - 3*u.x + 2/9.0*u.x*u.x - 1.5*u2); }
-            case Down     : { return (1/ 9.0) * rho * (1 - 3*u.y + 2/9.0*u.y*u.y - 1.5*u2); }
+            case Right    : { return (1/ 9.0) * rho * (1 + 3*u.x + 4.5*u.x*u.x - 1.5*u2); }
+            case Up       : { return (1/ 9.0) * rho * (1 + 3*u.y + 4.5*u.y*u.y - 1.5*u2); }
+            case Left     : { return (1/ 9.0) * rho * (1 - 3*u.x + 4.5*u.x*u.x - 1.5*u2); }
+            case Down     : { return (1/ 9.0) * rho * (1 - 3*u.y + 4.5*u.y*u.y - 1.5*u2); }
 
-            case RightUp  : { return (1/36.0) * rho * (1 + 3*( u.x+u.y) + 2/9.0*( u.x+u.y)*( u.x+u.y) - 1.5 * u2); }
-            case LeftUp   : { return (1/36.0) * rho * (1 + 3*(-u.x+u.y) + 2/9.0*(-u.x+u.y)*(-u.x+u.y) - 1.5 * u2); }
-            case LeftDown : { return (1/36.0) * rho * (1 + 3*(-u.x-u.y) + 2/9.0*(-u.x-u.y)*(-u.x-u.y) - 1.5 * u2); }
-            case RightDown: { return (1/36.0) * rho * (1 + 3*( u.x-u.y) + 2/9.0*( u.x-u.y)*( u.x-u.y) - 1.5 * u2); }
+            case RightUp  : { return (1/36.0) * rho * (1 + 3*( u.x+u.y) + 4.5*( u.x+u.y)*( u.x+u.y) - 1.5 * u2); }
+            case LeftUp   : { return (1/36.0) * rho * (1 + 3*(-u.x+u.y) + 4.5*(-u.x+u.y)*(-u.x+u.y) - 1.5 * u2); }
+            case LeftDown : { return (1/36.0) * rho * (1 + 3*(-u.x-u.y) + 4.5*(-u.x-u.y)*(-u.x-u.y) - 1.5 * u2); }
+            case RightDown: { return (1/36.0) * rho * (1 + 3*( u.x-u.y) + 4.5*( u.x-u.y)*( u.x-u.y) - 1.5 * u2); }
             default: break;
         }
         assert(false);
