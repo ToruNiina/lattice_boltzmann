@@ -25,7 +25,7 @@ int main()
 
         lbm::ConstantFlow boundary;
         boundary.initialize(model, init_rho, init_vel);
-        
+
         for(std::int32_t y=0; y<world.size_y(); ++y)
         {
             world.set_grid(0,                y, boundary);
