@@ -2,6 +2,7 @@
 #define LATTICE_BOLTZMANN_SDL_RESOURCE_HPP
 
 #include <format>
+#include <stdexcept>
 
 #include <SDL.h>
 
@@ -15,7 +16,7 @@ struct SDLResource
         if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
         {
             throw std::runtime_error(std::format(
-                        "Error while initializing SDL: {}", SDL_GetError());
+                        "Error while initializing SDL: {}", SDL_GetError()));
         }
     }
     ~SDLResource()

@@ -13,7 +13,7 @@ struct Cell final : public GridBase
 {
     ~Cell() override = default;
 
-    void initialize(const BGK& model, const double rho, const double Vector u) override
+    void initialize(const BGK& model, const double rho, const Vector u) override
     {
         for(const auto& dir : all_dirs)
         {

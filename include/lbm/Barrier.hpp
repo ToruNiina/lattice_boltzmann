@@ -13,7 +13,7 @@ struct Barrier final : public GridBase
 {
     ~Barrier() override = default;
 
-    void initialize(const BGK&, const double, const double Vector) override
+    void initialize(const BGK&, const double, const Vector) override
     {
         for(const auto& dir : all_dirs)
         {

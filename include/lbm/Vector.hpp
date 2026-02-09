@@ -16,11 +16,11 @@ Vector operator-(const Vector& lhs)
 {
     return Vector{-lhs.x, -lhs.y};
 }
-Vector operator+(const Vector& lhs, const Vecotr& rhs)
+Vector operator+(const Vector& lhs, const Vector& rhs)
 {
     return Vector{lhs.x + rhs.x, lhs.y + rhs.y};
 }
-Vector operator-(const Vector& lhs, const Vecotr& rhs)
+Vector operator-(const Vector& lhs, const Vector& rhs)
 {
     return Vector{lhs.x - rhs.x, lhs.y - rhs.y};
 }
@@ -28,12 +28,12 @@ Vector operator*(const Vector& lhs, const double rhs)
 {
     return Vector{lhs.x * rhs, lhs.y * rhs};
 }
-Vector operator*(const double lhs, const Vecotr& rhs)
+Vector operator*(const double lhs, const Vector& rhs)
 {
     return Vector{lhs * rhs.x, lhs * rhs.y};
 }
 
-double dot_product(const Vector& lhs, const Vecotr& rhs)
+double dot_product(const Vector& lhs, const Vector& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y;
 }
