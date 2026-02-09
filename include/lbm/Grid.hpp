@@ -3,6 +3,7 @@
 
 #include "Barrier.hpp"
 #include "Cell.hpp"
+#include "Boundary.hpp"
 
 #include <variant>
 #include <array>
@@ -17,8 +18,10 @@ struct Grid final : public GridBase
 
     explicit Grid(Cell    c): grid_(c) {}
     explicit Grid(Barrier b): grid_(b) {}
-    explicit Grid& operator=(Cell    c) {grid_ = c; return *this;}
-    explicit Grid& operator=(Barrier b) {grid_ = b; return *this;}
+    explicit Grid(ConstantFlow c): grid_(c) {}
+    Grid& operator=(Cell    c) {grid_ = c; return *this;}
+    Grid& operator=(Barrier b) {grid_ = b; return *this;}
+    Grid& operator=(ConstantFlow c) {grid_ = c; return *this;}
 
     void initialize(const BGK& model, const double rho, const Vector u) override
     {
@@ -62,7 +65,7 @@ struct Grid final : public GridBase
 
   private:
 
-    std::variant<Cell, Barrier> grid_;
+    std::variant<Cell, Barrier, ConstantFlow> grid_;
 };
 
 } // lbm
