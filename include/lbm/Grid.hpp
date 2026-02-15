@@ -32,9 +32,19 @@ struct Grid final : public GridBase
     {
         return std::visit([dir](const auto& g) {return g.distribution(dir);}, grid_);
     }
-    double& distribution(const Direction dir) noexcept override
+    void set_distribution(const Direction dir, double d) noexcept override
     {
-        return std::visit(DistributionGetter{dir}, grid_);
+        std::visit([dir, d](auto& g) {g.set_distribution(dir, d);}, grid_);
+        return;
+    }
+
+    bool bounces() const noexcept override
+    {
+        return std::visit([](const auto& g) {return g.bounces();}, grid_);
+    }
+    std::pair<Direction, double> bounce_back(const Direction dir) noexcept override
+    {
+        return std::visit([dir](auto& g) {return g.bounce_back(dir);}, grid_);
     }
 
     double density() const override
@@ -52,16 +62,6 @@ struct Grid final : public GridBase
 
     bool is_cell()    const noexcept {return grid_.index() == 0;}
     bool is_barrier() const noexcept {return grid_.index() == 1;}
-
-  private:
-
-    struct DistributionGetter
-    {
-        template<typename T>
-        double& operator()(T& c) const {return c.distribution(d);}
-
-        Direction d;
-    };
 
   private:
 

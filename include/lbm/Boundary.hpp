@@ -22,23 +22,39 @@ struct ConstantFlow final : public GridBase
 
         for(const auto& dir : all_dirs)
         {
-            this->true_distribution_.at(static_cast<std::size_t>(dir)) =
+            this->distribution_.at(static_cast<std::size_t>(dir)) =
                 bgk.equilibrium(dir, rho, u);
         }
-        distribution_ = true_distribution_;
+        this->eq_distribution_ = this->distribution_; // keep it
     }
 
     double  distribution(const Direction dir) const noexcept override
     {
         assert(static_cast<std::size_t>(dir) < distribution_.size());
-        distribution_ = true_distribution_;
         return distribution_[static_cast<std::size_t>(dir)];
     }
-    double& distribution(const Direction dir) noexcept override
+    void set_distribution(const Direction dir, double d) noexcept override
     {
-        assert(static_cast<std::size_t>(dir) < distribution_.size());
-        distribution_ = true_distribution_;
-        return distribution_[static_cast<std::size_t>(dir)];
+        const auto back = ::lbm::bounce_back(dir);
+        const auto dir_idx  = static_cast<std::size_t>(dir);
+        const auto back_idx = static_cast<std::size_t>(back);
+
+        assert(dir_idx  < distribution_.size());
+        assert(back_idx < distribution_.size());
+
+        // bounce non-equilibrium part of the distribution
+
+        distribution_[dir_idx ] = d;
+        distribution_[back_idx] = eq_distribution_[back_idx] + (d - eq_distribution_[dir_idx]);
+
+        return ;
+    }
+
+    bool bounces() const noexcept override {return false;}
+
+    std::pair<Direction, double> bounce_back(const Direction dir) noexcept override
+    {
+        return {Direction::None, 0};
     }
 
     // no fluid inside the barrier
@@ -60,8 +76,8 @@ struct ConstantFlow final : public GridBase
     double density_;
     Vector velocity_;
 
-    std::array<double, 9> true_distribution_;
-    mutable std::array<double, 9> distribution_;
+    std::array<double, 9> eq_distribution_;
+    std::array<double, 9> distribution_;
 };
 
 } // lbm

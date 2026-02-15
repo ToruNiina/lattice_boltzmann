@@ -15,9 +15,9 @@ struct Barrier final : public GridBase
 
     void initialize(const BGK&, const double, const Vector) override
     {
-        for(const auto& dir : all_dirs)
+        for(const auto dir : all_dirs)
         {
-            this->distribution(dir) = 0;
+            this->set_distribution(dir, 0);
         }
     }
 
@@ -26,10 +26,23 @@ struct Barrier final : public GridBase
         assert(static_cast<std::size_t>(dir) < distribution_.size());
         return distribution_[static_cast<std::size_t>(dir)];
     }
-    double& distribution(const Direction dir) noexcept override
+    void set_distribution(const Direction dir, double d) noexcept override
     {
         assert(static_cast<std::size_t>(dir) < distribution_.size());
-        return distribution_[static_cast<std::size_t>(dir)];
+        distribution_[static_cast<std::size_t>(dir)] = d;
+    }
+
+    bool bounces() const noexcept override {return true;}
+    std::pair<Direction, double> bounce_back(const Direction dir) noexcept override
+    {
+        const auto i = static_cast<std::size_t>(dir);
+        assert(i < distribution_.size());
+
+        const auto d = distribution_[i];
+        distribution_[i] = 0;
+
+        const auto back = ::lbm::bounce_back(dir);
+        return {back, d};
     }
 
     // no fluid inside the barrier

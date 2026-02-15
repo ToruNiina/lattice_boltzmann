@@ -19,8 +19,10 @@ struct BGK
     {
         for(const auto& dir : all_dirs)
         {
-            g.distribution(dir) *= (1 - omega_);
-            g.distribution(dir) += omega_ * this->equilibrium(dir, rho, u);
+            auto d = g.distribution(dir);
+            d *= (1 - omega_);
+            d += omega_ * this->equilibrium(dir, rho, u);
+            g.set_distribution(dir, d);
         }
         return ;
     }

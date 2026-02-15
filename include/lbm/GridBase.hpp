@@ -17,8 +17,11 @@ struct GridBase
 
     virtual void initialize(const BGK&, const double, const Vector) = 0;
 
-    virtual double  distribution(const Direction dir) const noexcept = 0;
-    virtual double& distribution(const Direction dir)       noexcept = 0;
+    virtual double distribution(const Direction dir) const noexcept = 0;
+    virtual void set_distribution(const Direction dir, double) noexcept = 0;
+
+    virtual bool bounces() const noexcept = 0;
+    virtual std::pair<Direction, double> bounce_back(const Direction) noexcept = 0;
 
     virtual double density() const = 0;
     virtual Vector velocity(const double rho) const = 0;

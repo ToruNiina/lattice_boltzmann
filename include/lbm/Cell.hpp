@@ -17,7 +17,7 @@ struct Cell final : public GridBase
     {
         for(const auto& dir : all_dirs)
         {
-            this->distribution(dir) = model.equilibrium(dir, rho, u);
+            this->set_distribution(dir, model.equilibrium(dir, rho, u));
         }
     }
 
@@ -26,10 +26,18 @@ struct Cell final : public GridBase
         assert(static_cast<std::size_t>(dir) < distribution_.size());
         return distribution_[static_cast<std::size_t>(dir)];
     }
-    double& distribution(const Direction dir) noexcept override
+
+    void set_distribution(const Direction dir, double d) noexcept override
     {
         assert(static_cast<std::size_t>(dir) < distribution_.size());
-        return distribution_[static_cast<std::size_t>(dir)];
+        distribution_[static_cast<std::size_t>(dir)] = d;
+        return ;
+    }
+
+    bool bounces() const noexcept override {return false;}
+    std::pair<Direction, double> bounce_back(const Direction d) noexcept override
+    {
+        return {Direction::None, 0};
     }
 
     double density() const override

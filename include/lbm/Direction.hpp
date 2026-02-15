@@ -19,6 +19,7 @@ enum class Direction : std::size_t
     LeftDown  = 6,
     Down      = 7,
     RightDown = 8,
+    None      = 9,
 };
 
 inline constexpr std::array<Direction, 9> all_dirs{{
